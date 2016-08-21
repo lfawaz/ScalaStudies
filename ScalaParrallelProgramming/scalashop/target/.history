@@ -1,0 +1,24 @@
+runMain scalashop.VerticalBoxBlurRunner
+runMain scalashop.HorizontalBoxBlurRunner
+runMain scalashop.ScalaShop
+compile
+test
+submit la_bib@hotmail.com sWbPL4si2jnHKXYI
+runMain scalashop.ScalaShop
+test
+compile
+test
+submit la_bib@hotmail.com O5avBsd2TUVGVzbP
+compile
+runMain scalashop.VerticalBoxBlurRunner
+compile
+submit la_bib@hotmail.com O5avBsd2TUVGVzbP
+compile
+submit la_bib@hotmail.com O5avBsd2TUVGVzbP
+compile
+submit la_bib@hotmail.com O5avBsd2TUVGVzbP
+submit la_bib@hotmail.com bNllh26HRquEkw0k
+compile
+submit la_bib@hotmail.com bNllh26HRquEkw0k
+runMain scalashop.HorizontalBoxBlurRunner
+runMain scalashop.VerticalBoxBlurRunner
