@@ -45,7 +45,7 @@ class KMeans {
   def classify(points: GenSeq[Point], means: GenSeq[Point]): GenMap[Point, GenSeq[Point]] = {
 
     val mapWithoutEmptyMeans = points.groupBy(findClosest(_,means))
-    val mapOfEmptyMeans = means.filterNot(mapWithoutEmptyMeans contains _) map ((_,GenSeq[Point]()))
+    val mapOfEmptyMeans = means.filterNot(mapWithoutEmptyMeans contains _) map ((_ -> GenSeq[Point]()))
     mapWithoutEmptyMeans ++ mapOfEmptyMeans
   }
 
