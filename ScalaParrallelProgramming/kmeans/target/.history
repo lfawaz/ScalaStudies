@@ -1,0 +1,13 @@
+runMain kmeans.kMeansRunner
+compile
+runMain kmeans.KMeansRunner
+test
+runMain kmeans.kMeansRunner
+runMain kmeans.KMeansRunner
+compile
+runMain kmeans.KMeansRunner
+run-main kmeans.fun.ScalaShop
+submit la_bib@hotmail.com ib@hotmail.com
+submit la_bib@hotmail.com Cmkk364dlJ1ZiG71
+compile
+test
