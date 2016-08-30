@@ -67,9 +67,12 @@ class KMeans {
   }
 
   def converged(eta: Double)(oldMeans: GenSeq[Point], newMeans: GenSeq[Point]): Boolean = {
-    val oldNewMeans = oldMeans zip newMeans
-    val meansSquareDistance = oldNewMeans.map (x=> x._1.squareDistance(x._2))
-    meansSquareDistance.exists(_ < eta)
+    if (oldMeans.isEmpty && newMeans.isEmpty) true
+    else {
+      val oldNewMeans = oldMeans zip newMeans
+      val meansSquareDistance = oldNewMeans.map(x => x._1.squareDistance(x._2))
+      meansSquareDistance.exists(_ <= eta)
+    }
   }
 
   @tailrec

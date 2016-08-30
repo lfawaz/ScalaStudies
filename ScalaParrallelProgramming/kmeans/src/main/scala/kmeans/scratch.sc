@@ -13,6 +13,8 @@ zips map (x => x._1 - x._2)
 
 old.exists(_ < 4)
 
+Vector() zip Vector()
+
 //abc.map{case (k,v)=> (average(v,k),v)}.keySet
 
 //abc.toArray.indexWhere()
