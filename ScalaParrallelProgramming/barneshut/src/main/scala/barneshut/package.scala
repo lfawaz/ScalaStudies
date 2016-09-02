@@ -72,15 +72,37 @@ package object barneshut {
       else //b.x > centerX && b.y < centerX
         new Fork(nw,ne,sw,se.insert(b))
 
-      new Fork(nw,ne,sw,se.insert(b))
     }
   }
 
   case class Leaf(centerX: Float, centerY: Float, size: Float, bodies: Seq[Body])
   extends Quad {
-    val (mass, massX, massY) = (bodies.reduce(_.mass + _.mass) : Float, ??? : Float, ??? : Float)
+    val (mass, massX, massY) = (bodies.map(_.mass).reduce(_ + _) : Float, bodies.map(p => (p.mass * p.x)).reduce(_ + _)  : Float, bodies.map(p => (p.mass * p.y)).reduce(_ + _) : Float)
     val total: Int = bodies.size
-    def insert(b: Body): Quad = ???
+    def insert(b: Body): Quad = {
+      val addedBodies = bodies :+ b
+      val quadSize = size / 4
+      val halfSize = size / 2
+      if (size > minimumSize) {
+        val addedFork = new Fork(
+                                  new Empty(centerX - quadSize, centerY + quadSize, halfSize),
+                                  new Empty(centerX + quadSize, centerY + quadSize, halfSize),
+                                  new Empty(centerX - quadSize,centerY - quadSize, halfSize),
+                                  new Empty(centerX + quadSize,centerY - quadSize, halfSize)
+        )
+
+        addedBodies.map(addedFork.insert(_))
+        addedFork
+        //for (b <- addedBodies) {
+        //  addedFork.insert(b)
+        //}
+        //addedFork
+      }
+      else {
+        new Leaf(centerX, centerY, addedBodies.size, addedBodies)
+      }
+
+    }
 
   }
 
