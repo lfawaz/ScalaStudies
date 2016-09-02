@@ -57,7 +57,7 @@ package object barneshut {
     val centerX: Float = (nw.centerX + ne.centerX + sw.centerX + se.centerX ) / 4
     val centerY: Float = (nw.centerY + ne.centerY + sw.centerY + se.centerY ) / 4
     val size: Float = nw.size + ne.size
-    val mass: Float = nw.mass + ne.mass + sw.size + se.size
+    val mass: Float = nw.mass + ne.mass + sw.mass + se.mass
     val massX: Float = ((nw.mass * nw.massX) + (ne.mass * ne.massX) + (sw.mass * sw.massX) + (se.mass * se.massX)) / mass
     val massY: Float = ((nw.mass * nw.massY) + (ne.mass * ne.massY) + (sw.mass * sw.massY) + (se.mass * se.massY)) / mass
     val total: Int = nw.total + ne.total + sw.total + se.total
@@ -77,7 +77,8 @@ package object barneshut {
 
   case class Leaf(centerX: Float, centerY: Float, size: Float, bodies: Seq[Body])
   extends Quad {
-    val (mass, massX, massY) = (bodies.map(_.mass).reduce(_ + _) : Float, bodies.map(p => (p.mass * p.x)).reduce(_ + _)  : Float, bodies.map(p => (p.mass * p.y)).reduce(_ + _) : Float)
+    val mass = (bodies.map(_.mass).reduce(_ + _) : Float)
+    val (massX, massY) =  (bodies.map(p => (p.x * p.mass)).reduce(_ + _) / mass : Float, bodies.map(p => (p.y * p.mass)).reduce(_ + _) / mass : Float)
     val total: Int = bodies.size
     def insert(b: Body): Quad = {
       val addedBodies = bodies :+ b
@@ -151,13 +152,22 @@ package object barneshut {
       }
 
       def traverse(quad: Quad): Unit = (quad: Quad) match {
-        case Empty(_, _, _) =>
+        case Empty(_, _, _) => ()
           // no force
-        case Leaf(_, _, _, bodies) =>
+        case Leaf(_, _, _, bodies) => bodies.map(b=> addForce(b.mass,b.x,b.y))
           // add force contribution of each body by calling addForce
         case Fork(nw, ne, sw, se) =>
-          // see if node is far enough from the body,
-          // or recursion is needed
+          if((quad.size / distance(x,y,quad.massX,quad.massY)) < theta)
+            addForce(quad.mass,quad.massX,quad.massY)
+          else
+          if (x < quad.centerX && y > quad.centerY)
+            traverse(nw)
+          else if(x > quad.centerX && y > quad.centerY)
+            traverse(ne)
+          else if (x < quad.centerX && y < quad.centerY)
+            traverse(sw)
+          else //b.x > centerX && b.y < centerX
+            traverse(se)
       }
 
       traverse(quad)
